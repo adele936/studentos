@@ -166,7 +166,13 @@ function App() {
   const avatarColor = getAvatarColor(profile.fullName);
 
   if (!user) {
-    return <Landing onSignUp={() => { setAuthMode('signup'); setShowAuth(true); }} onLogin={() => { setAuthMode('login'); setShowAuth(true); }} showAuth={showAuth} authMode={authMode} setAuthMode={setAuthMode} closeAuth={() => setShowAuth(false)} onAuthSuccess={handleAuthSuccess} />;
+    return (
+      <>
+        <Landing onSignUp={() => { setAuthMode('signup'); setShowAuth(true); }} onLogin={() => { setAuthMode('login'); setShowAuth(true); }} showAuth={showAuth} authMode={authMode} setAuthMode={setAuthMode} closeAuth={() => setShowAuth(false)} onAuthSuccess={handleAuthSuccess} />
+        {showAuth && <AuthModal mode={authMode} setMode={setAuthMode} onClose={() => setShowAuth(false)} onSuccess={handleAuthSuccess} />}
+        {showOnboarding && <Onboarding profile={profile} onComplete={handleOnboardingComplete} />}
+      </>
+    );
   }
 
   return (
