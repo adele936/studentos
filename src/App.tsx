@@ -5,6 +5,7 @@ import {
   Menu, MessageSquareText, MoreHorizontal, Plus, Search, Settings2, Sparkles, Target,
   Trophy, X, Zap, Filter, Star, Globe, DollarSign, Award, Send, Trash2, Pencil, XCircle,
 } from 'lucide-react';
+import { Analytics } from '@vercel/analytics/react';
 import { supabase } from '@/lib/supabase';
 import { universities, allCountries, allMajors } from '@/data/universities';
 import type { University } from '@/data/universities';
@@ -171,6 +172,7 @@ function App() {
         <Landing onSignUp={() => { setAuthMode('signup'); setShowAuth(true); }} onLogin={() => { setAuthMode('login'); setShowAuth(true); }} showAuth={showAuth} authMode={authMode} setAuthMode={setAuthMode} closeAuth={() => setShowAuth(false)} onAuthSuccess={handleAuthSuccess} />
         {showAuth && <AuthModal mode={authMode} setMode={setAuthMode} onClose={() => setShowAuth(false)} onSuccess={handleAuthSuccess} />}
         {showOnboarding && <Onboarding profile={profile} onComplete={handleOnboardingComplete} />}
+        <Analytics />
       </>
     );
   }
@@ -247,6 +249,7 @@ function App() {
       {showAdvisor && <Advisor onClose={() => setShowAdvisor(false)} profile={profile} />}
       {showAuth && <AuthModal mode={authMode} setMode={setAuthMode} onClose={() => setShowAuth(false)} onSuccess={handleAuthSuccess} />}
       {showOnboarding && <Onboarding profile={profile} onComplete={handleOnboardingComplete} />}
+      <Analytics />
     </div>
   );
 }
