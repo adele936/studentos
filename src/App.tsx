@@ -4,6 +4,7 @@ import {
   CircleHelp, Compass, FileText, GraduationCap, LayoutDashboard, Lightbulb, LogOut,
   Menu, MessageSquareText, MoreHorizontal, Plus, Search, Settings2, Sparkles, Target,
   Trophy, X, Zap, Filter, Star, Globe, DollarSign, Award, Send, Trash2, Pencil, XCircle,
+  ShieldCheck,
 } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import { universities, allCountries, allMajors } from '@/data/universities';
@@ -13,8 +14,9 @@ import type { StudentProfile } from '@/lib/types';
 import { analyzeProfile, generateAdvisorResponse, generateRoadmap } from '@/lib/advisor';
 import type { AdvisorMessage } from '@/lib/advisor';
 import Landing from '@/components/Landing';
+import { ApplicationIntelligence } from '@/components/ApplicationIntelligence';
 
-type View = 'Overview' | 'Universities' | 'Roadmap' | 'Applications' | 'Scholarships' | 'Essays';
+type View = 'Overview' | 'Universities' | 'Roadmap' | 'Applications' | 'Scholarships' | 'Essays' | 'AppIntelligence';
 type AuthUser = { id: string; email: string } | null;
 
 type Application = {
@@ -46,6 +48,7 @@ const navItems: { label: View; icon: typeof LayoutDashboard }[] = [
   { label: 'Applications', icon: FileText },
   { label: 'Scholarships', icon: Trophy },
   { label: 'Essays', icon: BookOpen },
+  { label: 'AppIntelligence', icon: ShieldCheck },
 ];
 
 function App() {
@@ -194,7 +197,7 @@ function App() {
         <nav className="main-nav">
           {navItems.map(({ label, icon: Icon }) => (
             <button key={label} className={`nav-item ${activeView === label ? 'active' : ''}`} onClick={() => { setActiveView(label); setMobileOpen(false); }}>
-              <Icon size={17} /><span>{label}</span>
+              <Icon size={17} /><span>{label === 'AppIntelligence' ? 'App Intelligence' : label}</span>
               {label === 'Applications' && <span className="nav-count">{applications.length}</span>}
               {label === 'Universities' && <span className="nav-count">{universities.length}+</span>}
             </button>
@@ -243,6 +246,7 @@ function App() {
         {activeView === 'Applications' && <Applications items={applications} onComplete={advanceApplication} onRemove={removeApplication} onAdd={() => setActiveView('Universities')} />}
         {activeView === 'Scholarships' && <Scholarships savedScholarships={savedScholarships} onToggleSave={(name) => setSavedScholarships((c) => c.includes(name) ? c.filter((s) => s !== name) : [...c, name])} />}
         {activeView === 'Essays' && <Essays essays={essays} setEssays={setEssays} />}
+        {activeView === 'AppIntelligence' && <ApplicationIntelligence />}
       </main>
       {showAdvisor && <Advisor onClose={() => setShowAdvisor(false)} profile={profile} />}
       {showAuth && <AuthModal mode={authMode} setMode={setAuthMode} onClose={() => setShowAuth(false)} onSuccess={handleAuthSuccess} />}
